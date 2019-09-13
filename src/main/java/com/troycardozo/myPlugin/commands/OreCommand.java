@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.troycardozo.myPlugin.App;
 import com.troycardozo.myPlugin.Utils.OtherF;
+import com.troycardozo.myPlugin.Docs;
 
 public class OreCommand implements CommandExecutor {
 
@@ -30,53 +31,6 @@ public class OreCommand implements CommandExecutor {
     public OreCommand(App instance) {
         plugin = instance;
     }
-
-    // horrible code i know.
-    final private static String[] ENTITY_COORDS_DOCS = {
-            ChatColor.AQUA + "      /ore entity coords set <value>" + ChatColor.GREEN
-                    + " #creates a spawn range, to place your special blocks.",
-            ChatColor.AQUA + "      /ore entity coords tp" + ChatColor.GREEN
-                    + " #teleports you to the center of the spawn range",
-            ChatColor.AQUA + "      /ore entity coords show" + ChatColor.GREEN + " #Shows outline of spawn range",
-            ChatColor.AQUA + "      /ore entity coords hide" + ChatColor.GREEN + " #Hides outline of spawn range." };
-
-    final private static String[] ENTITY_DOCS = {
-            ChatColor.AQUA + "  /ore entity create" + ChatColor.GREEN
-                    + " #create entity <name>, creates a new config with default values!",
-            ChatColor.AQUA + "  /ore entity delete" + ChatColor.GREEN
-                    + " #delete entity, removes config and selects first entity in list",
-            ChatColor.AQUA + "  /ore entity list" + ChatColor.GREEN
-                    + " #Shows full list of entities and highlights the selected one.",
-            ChatColor.AQUA + "  /ore entity set <name>" + ChatColor.GREEN + " #Select a different entity.",
-            ChatColor.AQUA + "  /ore entity coords <name>" + ChatColor.GREEN + " #Select a different entity.",
-            ChatColor.AQUA + "  /ore entity clearall" + ChatColor.GREEN
-                    + " #Removes all blocks that belong to the selected entity." };
-
-    final private static String[] CONFIG_DOCS = {
-            ChatColor.AQUA + "  /ore config percent <value>" + ChatColor.GREEN
-                    + " #hold the block and set a percentage [1-100] can even go with decimals.",
-            ChatColor.AQUA + "  /ore config duration <value>" + ChatColor.GREEN
-                    + " #change the duration using simple time like 10m 20s!",
-            ChatColor.AQUA + "  /ore config defaultblock <name>" + ChatColor.GREEN
-                    + " #change the default block that shows when ore is mined, google the material names to set the name.",
-            ChatColor.AQUA + "  /ore config types" + ChatColor.GREEN + " #block types in the list!",
-            ChatColor.AQUA + "  /ore config placedblocks" + ChatColor.GREEN
-                    + " #get a total amount of blocks placed for this entity!",
-
-    };
-
-    final private static String[] DOCS = { ChatColor.YELLOW + "OreRegen Mod || version 0.1 || t_r_o_y_c_a_r_z",
-            ChatColor.YELLOW + "======================================", ChatColor.DARK_RED + "Docs: ",
-            ChatColor.AQUA + "/ore tools" + ChatColor.GREEN
-                    + " #Gives a ore placer & customiser, description on tools!",
-            ChatColor.AQUA + "/ore entity" + ChatColor.GREEN
-                    + " #create/delete/select entity with its own configs. Create multiple different caves, gardens etc!",
-            ENTITY_DOCS[0], ENTITY_DOCS[1], ENTITY_DOCS[2], ENTITY_DOCS[3], ENTITY_DOCS[4], ENTITY_COORDS_DOCS[0],
-            ENTITY_COORDS_DOCS[1], ENTITY_COORDS_DOCS[2], ENTITY_COORDS_DOCS[3], ENTITY_DOCS[5],
-            ChatColor.AQUA + "/ore config" + ChatColor.GREEN + " #Configure settings for entity", CONFIG_DOCS[0],
-            CONFIG_DOCS[1], CONFIG_DOCS[2], CONFIG_DOCS[3], CONFIG_DOCS[4],
-            ChatColor.AQUA + "/ore reload" + ChatColor.GREEN
-                    + " #Reload all the ores for all entities (useful if you made a mistake with duration)" };
 
     // ========================================
 
@@ -90,11 +44,14 @@ public class OreCommand implements CommandExecutor {
 
                 plugin.ore.entityConfigMatch(player);
                 if (args.length == 0) {
-                    player.sendMessage(DOCS);
+                    player.sendMessage(Docs.MAIN);
                     player.sendMessage(plugin.ore.prefix + "Usage: /" + label + " <key> <value>");
                     return false;
                 }
                 switch (args[0]) {
+                case "help":
+                    player.sendMessage(Docs.MAIN);
+                    break;
                 case "reload":
                     plugin.ore.repairSpawnedOres();
                     break;
@@ -122,7 +79,7 @@ public class OreCommand implements CommandExecutor {
 
         if (args.length == 1) {
             player.sendMessage(plugin.ore.prefix + "Entity commands: ");
-            player.sendMessage(ENTITY_DOCS);
+            player.sendMessage(Docs.ENTITY_DOCS);
             player.sendMessage(plugin.ore.prefix + "Entity currently selected is: " + plugin.ore.selectedEntity);
             return;
         }
@@ -219,7 +176,7 @@ public class OreCommand implements CommandExecutor {
 
         if (args.length == 2) {
             player.sendMessage(plugin.ore.prefix + "Entity coords commands: ");
-            player.sendMessage(ENTITY_COORDS_DOCS);
+            player.sendMessage(Docs.ENTITY_COORDS_DOCS);
             return;
         }
 
@@ -274,7 +231,7 @@ public class OreCommand implements CommandExecutor {
 
         if (args.length == 1) {
             player.sendMessage(plugin.ore.prefix + "Config commands: ");
-            player.sendMessage(CONFIG_DOCS);
+            player.sendMessage(Docs.CONFIG_DOCS);
             return;
         }
         switch (args[1]) {
