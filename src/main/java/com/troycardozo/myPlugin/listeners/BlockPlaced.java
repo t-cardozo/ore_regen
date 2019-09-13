@@ -24,7 +24,7 @@ public class BlockPlaced implements Listener {
         plugin = instance;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItemInHand();

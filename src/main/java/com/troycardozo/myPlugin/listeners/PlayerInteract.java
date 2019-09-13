@@ -26,7 +26,7 @@ public class PlayerInteract implements Listener {
         plugin = instance;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
