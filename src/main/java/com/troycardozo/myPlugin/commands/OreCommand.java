@@ -32,8 +32,6 @@ public class OreCommand implements CommandExecutor {
         plugin = instance;
     }
 
-    // ========================================
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
