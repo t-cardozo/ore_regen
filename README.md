@@ -6,12 +6,12 @@ Troy Cardozo
 
 # Ore regen docs:
 
-Entities
-Description:
+# Entities
+# Description:
   Entities are a set of different config files that run under the same plugin, having this feature means you can have multiple cave
   systems with different ores, set durations etc.
 
-Commands:
+# Commands:
 # /ore || /ore help 
 Shows the commands this plugin can execute along with what it does. 
 
@@ -30,11 +30,11 @@ Removes all spawned blocks associated to the Selected entity
 # /ore entity delete <name>
 Remove an entity from the config.. info: if you want this completely gone along with the blocks etc., make sure you use select the entity you’re about to delete. Warning: when this command runs the first entity will be selected. 
 
-Range
-Description:
+# Range
+# Description:
   When an entity is created you need to set a range, when you enter this range you will essentially run the config file entitled to it.   Warning: Do not overlap ranges.
   
- Commands:
+# Commands:
 # /ore entity coords set <value>
 The number set will determine how many blocks from each side the range will be, so if you add 50, it will add 50 blocks on all sides in range from where you’re standing. Also makes an outline for 5 seconds (depends where you are you can see it). You can change this anytime.
   
@@ -48,11 +48,11 @@ Shows outline of the range
 Hides outline of range
 
 
-Config variables 
-Description:
+# Config variables 
+# Description:
   Change the config for selected entity, eg: ore regen duration, default block type etc.
   
-Commands
+# Commands
 # /ore config duration <time>  
 Changes the duration of how long it takes for to regenerate. Warning ⚠ set time in nice string format for example /ore config duration 1m 10s
 
@@ -68,8 +68,8 @@ Gives list of all the ores in the list and the percentages assigned to them.
 # /ore config placedblocks
 Tells the amount of blocks assigned to the entity.
 
-Tools
-Description:
+# Tools
+# Description:
   You get 2 special tools provided by the plugin, Ore placer & Ore Customizer the ore placer is used as a way to place the special
   blocks and the ore customizer is used to toggle the block you want to add/remove from the list. Warning ⚠ you need to set a dedicated
   range for the entity before starting to place blocks. 
@@ -78,6 +78,6 @@ Description:
   then set the percentage like /ore config percent 10
   Warning ⚠ make sure all the blocks in the list adds up to 100
 
-Commands
+# Commands
 # /ore tools
 Gives an Enchanted bedrock and enchanted stick. Warning make sure you have empty inventory slots.
