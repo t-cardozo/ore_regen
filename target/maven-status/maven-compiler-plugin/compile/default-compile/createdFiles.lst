@@ -4,6 +4,7 @@ com\troycardozo\myPlugin\Ore$1.class
 com\troycardozo\myPlugin\Docs.class
 com\troycardozo\myPlugin\Ore$2.class
 com\troycardozo\myPlugin\listeners\BlockBreak$1.class
+com\troycardozo\myPlugin\commands\OreCommand.class
 com\troycardozo\myPlugin\listeners\BlockBreak.class
 com\troycardozo\myPlugin\Utils\RandomCollection.class
 com\troycardozo\myPlugin\Utils\OtherF.class
