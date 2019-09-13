@@ -1,0 +1,11 @@
+version: 1.0
+released: 2019
+
+general:
+  default-block: "STONE" #block you want to see when the ore is mined.
+  regen-duration: 15s
+
+#Block name and percentage of spawn rate
+ore-spawn:
+  DIAMOND_ORE: 50
+  GOLD_ORE: 50

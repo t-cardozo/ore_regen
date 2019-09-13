@@ -1,0 +1,7 @@
+main: com.troycardozo.myPlugin.App
+name: OreRegen
+version: 0.1
+api-version: 1.14
+commands:
+  ore:
+    description: Runs ore gen commands
