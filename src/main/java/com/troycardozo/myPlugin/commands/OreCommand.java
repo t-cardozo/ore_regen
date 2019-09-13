@@ -1,16 +1,5 @@
 package com.troycardozo.myPlugin.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,8 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.troycardozo.myPlugin.App;
-import com.troycardozo.myPlugin.Utils.OtherF;
 import com.troycardozo.myPlugin.Docs;
+import com.troycardozo.myPlugin.Utils.OtherF;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class OreCommand implements CommandExecutor {
 
@@ -125,6 +125,9 @@ public class OreCommand implements CommandExecutor {
             e.printStackTrace();
         }
 
+        plugin.ore.highlightAllSpawnedBlocks(false, player);
+        plugin.ore.outLineCoords(player, plugin.ore.rangeDistance, "hide", false); // hide any previous outlines
+
         plugin.ore.loadConfigs();
         plugin.ore.setSelectedEntity(entity);
         plugin.ore.loadConfigVariables(entity, false);
@@ -142,6 +145,7 @@ public class OreCommand implements CommandExecutor {
         }
         String entity = args[2];
         if (plugin.ore.getEntityList().contains(entity)) {
+            plugin.ore.highlightAllSpawnedBlocks(false, player);
             plugin.ore.outLineCoords(player, plugin.ore.rangeDistance, "hide", false); // hide any previous outlines
             plugin.ore.setSelectedEntity(entity);
             plugin.ore.loadConfigVariables(entity, false);
@@ -246,14 +250,26 @@ public class OreCommand implements CommandExecutor {
             entityDefaultBlockConfig(player, args);
             break;
         case "placedblocks":
+            entityPlacedBlocksConfig(player);
+            break;
+        default:
+            player.sendMessage(plugin.ore.prefix + "Invalid command");
+        }
+    }
+
+    private void entityPlacedBlocksConfig(Player player) {
+
+        if (plugin.ore.togglePlacedBlocksConfig) {
+
             if (plugin.ore.spawnedList.size() > 0) {
                 player.sendMessage(plugin.ore.prefix + "Spawned Ore Blocks: [" + plugin.ore.spawnedList.size() + "]");
             } else {
                 player.sendMessage(plugin.ore.prefix + "No spawned blocks!");
             }
-            break;
-        default:
-            player.sendMessage(plugin.ore.prefix + "Invalid command");
+
+            plugin.ore.highlightAllSpawnedBlocks(true, player);
+        } else {
+            plugin.ore.highlightAllSpawnedBlocks(false, player);
         }
     }
 

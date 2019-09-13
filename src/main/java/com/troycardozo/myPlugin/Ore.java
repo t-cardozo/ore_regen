@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.troycardozo.myPlugin.App;
 import com.troycardozo.myPlugin.Utils.OtherF;
 import com.troycardozo.myPlugin.Utils.RandomCollection;
 import com.troycardozo.myPlugin.config.YmlConfig;
@@ -33,6 +32,7 @@ public class Ore {
     public String regenDuration;
     public Integer rangeDistance;
     public String configName;
+    public Boolean togglePlacedBlocksConfig = true;
 
     public HashMap<String, List<Integer>> allEntitiesMinMax = new HashMap<String, List<Integer>>(); // x & z min max for
                                                                                                     // all entities
@@ -96,6 +96,7 @@ public class Ore {
     public void loadConfigVariables(String entity, Boolean onLoad) {
 
         plugin.oreGenConfig = plugin.oreGenConfigs.get(entity);
+        togglePlacedBlocksConfig = true;
         getConfigName();
         getSelectedEntity();
         loadSpawnedOres();
@@ -184,58 +185,76 @@ public class Ore {
         if (eventType.equals("set")) {
             entLoc = player.getLocation();
         } else if (eventType.equals("show") || eventType.equals("hide")) {
-            if(plugin.getConfig().isSet("entity-list." + selectedEntity + ".coords.middle")){
+            if (plugin.getConfig().isSet("entity-list." + selectedEntity + ".coords.middle")) {
                 String savedLoc = plugin.getConfig().getString("entity-list." + selectedEntity + ".coords.middle");
                 entLoc = OtherF.deserializeLocation(plugin, savedLoc);
             }
         }
 
-        if(entLoc != null) {
+        if (entLoc != null) {
 
             Location corner1 = new Location(entLoc.getWorld(), entLoc.getBlockX() + length, entLoc.getBlockY() + 1,
-            entLoc.getBlockZ() - length);
+                    entLoc.getBlockZ() - length);
             Location corner2 = new Location(entLoc.getWorld(), entLoc.getBlockX() - length, entLoc.getBlockY() + 1,
-            entLoc.getBlockZ() + length);
-            
-        
-        int minX = Math.min(corner1.getBlockX(), corner2.getBlockX());
-        int maxX = Math.max(corner1.getBlockX(), corner2.getBlockX());
-        int minZ = Math.min(corner1.getBlockZ(), corner2.getBlockZ());
-        int maxZ = Math.max(corner1.getBlockZ(), corner2.getBlockZ());
+                    entLoc.getBlockZ() + length);
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int z = minZ; z <= maxZ; z++) {
+            int minX = Math.min(corner1.getBlockX(), corner2.getBlockX());
+            int maxX = Math.max(corner1.getBlockX(), corner2.getBlockX());
+            int minZ = Math.min(corner1.getBlockZ(), corner2.getBlockZ());
+            int maxZ = Math.max(corner1.getBlockZ(), corner2.getBlockZ());
 
-                if ((x == minX || x == maxX) || (z == minZ || z == maxZ)) {
-                    final Block b = corner1.getWorld().getBlockAt(x, entLoc.getBlockY(), z);
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
 
-                    if (eventType.equals("set")) {
+                    if ((x == minX || x == maxX) || (z == minZ || z == maxZ)) {
+                        final Block b = corner1.getWorld().getBlockAt(x, entLoc.getBlockY(), z);
 
-                        player.sendBlockChange(b.getLocation(), Material.SEA_LANTERN.createBlockData()); // show outline
+                        if (eventType.equals("set")) {
 
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                b.getState().update(); // undo to old block
-                            }
+                            player.sendBlockChange(b.getLocation(), Material.SEA_LANTERN.createBlockData()); // show
+                                                                                                             // outline
 
-                        }.runTaskLater(plugin, (20 * 5)); // seconds change the block to noprmal.
-                    } else if (eventType.equals("show")) {
-                        player.sendBlockChange(b.getLocation(), Material.SEA_LANTERN.createBlockData()); // show outline
-                    } else if (eventType.equals("hide")) {
-                        b.getState().update(); // undo to old block
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    b.getState().update(); // undo to old block
+                                }
+
+                            }.runTaskLater(plugin, (20 * 5)); // seconds change the block to noprmal.
+                        } else if (eventType.equals("show")) {
+                            player.sendBlockChange(b.getLocation(), Material.SEA_LANTERN.createBlockData()); // show
+                                                                                                             // outline
+                        } else if (eventType.equals("hide")) {
+                            b.getState().update(); // undo to old block
+                        }
+
                     }
-
                 }
             }
-        }
 
-        if (eventType.equals("set")) {
-            saveConfig("entity-list." + selectedEntity + ".coords.middle", OtherF.serializeLocation(entLoc.getBlock()));
-            setRangeDistance(length);
-            setRangeCoords(minX, maxX, minZ, maxZ);
+            if (eventType.equals("set")) {
+                saveConfig("entity-list." + selectedEntity + ".coords.middle",
+                        OtherF.serializeLocation(entLoc.getBlock()));
+                setRangeDistance(length);
+                setRangeCoords(minX, maxX, minZ, maxZ);
+            }
         }
     }
+
+    // toggles highlights all the blocks that are placed.
+    public void highlightAllSpawnedBlocks(Boolean highlight, Player player) {
+
+        for (String blockLoc : plugin.ore.spawnedList.values()) {
+            Location loc = OtherF.deserializeLocation(plugin, blockLoc);
+            Block block = loc.getBlock();
+            if (highlight) {
+                player.sendBlockChange(loc, Material.SEA_LANTERN.createBlockData()); // show outline
+                togglePlacedBlocksConfig = false;
+            } else {
+                block.getState().update();
+                togglePlacedBlocksConfig = true;
+            }
+        }
     }
 
     private void getRangeCoords() {

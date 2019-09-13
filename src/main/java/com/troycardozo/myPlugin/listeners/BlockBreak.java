@@ -107,7 +107,6 @@ public class BlockBreak implements Listener {
                         plugin.ore.regenOre(block, plugin.ore.regenDuration, entityID);
 
                     } else {
-                        player.sendMessage(plugin.ore.prefix + ChatColor.RED + "Wait till the ore regens!");
                         event.setCancelled(true); // this makes it so you cant mine the default blocks.
                     }
                 }
