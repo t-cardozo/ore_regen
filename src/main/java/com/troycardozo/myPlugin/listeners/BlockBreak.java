@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -92,6 +93,10 @@ public class BlockBreak implements Listener {
                 List<String> blockLOCList = new ArrayList<String>(plugin.ore.spawnedList.values());
 
                 if (blockLOCList.contains(blockLOC)) {
+                    event.setDropItems(false); // disable natural drop
+                    block.getWorld().dropItem(block.getLocation(), new ItemStack(block.getType())); // give the actual
+                                                                                                    // block that
+                                                                                                    // was mined.
                     if (!plugin.ore.isBlockMined(blockLOC, plugin.ore.defaultBlock)) {
 
                         new BukkitRunnable() {
