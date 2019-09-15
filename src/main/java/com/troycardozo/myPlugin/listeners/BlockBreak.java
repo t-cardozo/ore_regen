@@ -93,11 +93,14 @@ public class BlockBreak implements Listener {
                 List<String> blockLOCList = new ArrayList<String>(plugin.ore.spawnedList.values());
 
                 if (blockLOCList.contains(blockLOC)) {
-                    event.setDropItems(false); // disable natural drop
-                    block.getWorld().dropItem(block.getLocation(), new ItemStack(block.getType())); // give the actual
-                                                                                                    // block that
-                                                                                                    // was mined.
+
                     if (!plugin.ore.isBlockMined(blockLOC, plugin.ore.defaultBlock)) {
+
+                        event.setDropItems(false); // disable natural drop
+                        block.getWorld().dropItem(block.getLocation(), new ItemStack(block.getType())); // give the
+                                                                                                        // actual
+                                                                                                        // block that
+                                                                                                        // was mined.
 
                         new BukkitRunnable() {
 
